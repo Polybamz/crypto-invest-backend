@@ -1,7 +1,18 @@
 // Import the functions you need from the SDKs you need
 import admin from "firebase-admin";
 import 'firebase/auth';
-import 'dotenv/config'
+import dotenv from 'dotenv';
+dotenv.config();
+console.log('TYPEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',process.env.TYPE)
+console.log('PRIVATE_KEY_ID',process.env.PRIVATE_KEY_ID)
+console.log('PRIVATE_KEY',process.env.PRIVATE_KEY)
+console.log('CLIENT_EMAIL',process.env.CLIENT_EMAIL)
+console.log('CLIENT_ID',process.env.CLIENT_ID)
+console.log('AUTH_UR',process.env.AUTH_UR)
+console.log('TOKEN_URI',process.env.TOKEN_URI)
+console.log('AUTH_PROVIDER',process.env.AUTH_PROVIDER)
+console.log('CERT_URL',process.env.CERT_URL)
+console.log('DOMAIN',process.env.DOMAIN)
 
 admin.initializeApp({
     credential: admin.credential.cert({

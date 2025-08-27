@@ -1,5 +1,5 @@
 const express = require('express');
-import 'dotenv/config'
+
 const app = express();
 const port = 5000;
 
