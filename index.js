@@ -1,9 +1,12 @@
+// import dotenv from 'dotenv';
+// dotenv.config();
+const dotenv = require('dotenv').config()
 const express = require('express');
 
+
 const app = express();
-import dotenv from 'dotenv';
-dotenv.config();
-const port = process.env.PORT || 5000;
+
+const port = process.env.PORT || 8080;
 
 const authRoute = require('./src/routes/auth/auth_route');
 
