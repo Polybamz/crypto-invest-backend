@@ -1,14 +1,13 @@
-// import dotenv from 'dotenv';
-// dotenv.config();
-const dotenv = require('dotenv').config()
-const express = require('express');
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
 
 
 const app = express();
 
 const port = process.env.PORT || 8080;
 
-const authRoute = require('./src/routes/auth/auth_route');
+import authRoute from "./src/routes/auth/auth_route.js"
 
 app.use(express.json());
 app.get('/', (req, res) => {
