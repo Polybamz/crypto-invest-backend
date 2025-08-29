@@ -1,4 +1,5 @@
 import { db, admin } from '../../config/config.js';
+import {signInWithEmailAndPassword} from 'firebase/auth';
 
 class AuthServices {
     static async registerUser(email, password, firstName, lastName, referralCode, referredBy) {
@@ -29,8 +30,9 @@ class AuthServices {
 
     static async loginUser(email, password) {
         try {
-            const user = await admin.auth().signInWithEmailAndPassword(email, password);
+            const user = await admin.auth().getUserByEmail(email);
             const userData = this.getUserById(user.uid);
+            console.log(userData, password);
             return userData;
         } catch (error) {
             console.log(error);
