@@ -1,4 +1,4 @@
-const { db, admin } = require('../../config/config');
+import { db, admin } from '../../config/config.js';
 
 class AuthServices {
     static async registerUser(email, password, firstName, lastName, referralCode, referredBy) {
@@ -52,4 +52,4 @@ class AuthServices {
     }
 }
 
-module.exports = {AuthServices};
+export default AuthServices;

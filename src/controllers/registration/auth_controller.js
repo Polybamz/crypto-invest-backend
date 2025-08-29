@@ -1,4 +1,4 @@
-const { AuthServices } = require('../../services/registration/auth_service');
+const  AuthServices  = require('../../services/registration/auth_service');
 const {validateUser} = require('../../models/registration/user_model');
 
 class AuthController {
