@@ -51,5 +51,4 @@ class AuthServices {
         }
     }
 }
-
-export default AuthServices;
+export { AuthServices };

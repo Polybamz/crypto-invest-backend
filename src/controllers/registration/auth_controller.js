@@ -1,4 +1,4 @@
-const  AuthServices  = require('../../services/registration/auth_service');
+const  {AuthServices}  = require('../../services/registration/auth_service.js');
 const {validateUser} = require('../../models/registration/user_model');
 
 class AuthController {
@@ -30,7 +30,7 @@ class AuthController {
             return res.status(201).json({ message: 'User registered successfully', data: user });
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: 'Internal server error' });
+            return res.status(500).json({ message: 'Internal server error', error: error.message });
         }
     }
 
