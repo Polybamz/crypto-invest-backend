@@ -49,6 +49,7 @@ class AuthController {
     }
 
     static async getUser(req, res) {
+        console.log('Fetching user ggggggggggggggggggggggggggggggggggggggggggggggggggg');
         const uid = req.params.uid;
         try {
             const user = await AuthServices.getUserById(uid);

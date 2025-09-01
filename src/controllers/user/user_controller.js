@@ -3,7 +3,9 @@ import { db } from '../../config/config.js';
 // @desc    Get user profile
 // @route   GET /api/users/:userId
 export const getUserProfile = async (req, res) => {
+  console.log('Fetching user profile');
   const { userId } = req.params;
+
   try {
     const userRef = db.collection('users').doc(userId);
     const doc = await userRef.get();

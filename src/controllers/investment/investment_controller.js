@@ -1,19 +1,55 @@
 import { db, admin } from '../../config/config.js';
 
+const generatePlanId = () => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let planId = '';
+  for (let i = 0; i < 10; i++) {
+    planId += chars.charAt(Math.floor(Math.random() * chars.length));
 
-export const createPlan  = async () => {
+  }
+  return planId;
+}
+
+export const createPlan  = async (req, res) => {
+  
+  try{
+    console.log('req.body',req.body)
+    const plansRef = db.collection('InvestmentPlans').doc();  
+    const plan = await plansRef.set({
+        planId: generatePlanId(),
+        name: req.body.name,
+        amount: req.body.amount,
+        roi: req.body.roi,
+        days: req.body.days,
+        isActive: true,
+        tier: req.body.tier,
+        features: req.body.features,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        
+      }
+    )
+    console.log('plan',plan)
+    if(plan){
+      return res.status(201).json({ message: 'Plan created successfully', plan: plan });
+    }
+  } catch (er) {
+    res.status(500).json({ message: er.message });
+  }
 
 }
 
 // @desc    Get all investment plans
 // @route   GET /api/investments/plans
 export const getInvestmentPlans = async (req, res) => {
+  console.log('Fetching investment plans');
   try {
     const plansRef = db.collection('InvestmentPlans');
     const snapshot = await plansRef.where('isActive', '==', true).get();
     const plans = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     res.status(200).json(plans);
   } catch (error) {
+    console.log('Error fetching investment plans:', error);
     res.status(500).json({ message: error.message });
   }
 };
