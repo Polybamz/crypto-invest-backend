@@ -22,3 +22,32 @@ npm run dev
 ```
 
 The server will be running on port 8080.
+
+
+#Referral cade is asigned during sign up
+
+##Folder structure
+```
+
+├── controllers
+│   ├── auth.controller.js
+│   ├── referral.controller.js
+│   └── user.controller.js
+├── models 
+│   ├── referral.model.js
+│   └── user.model.js
+├── routes
+│   ├── auth.route.js
+│   ├── referral.route.js
+│   └── user.route.js
+├── services
+│   ├── auth.service.js
+│   ├── referral.service.js
+│   └── user.service.js
+├── .env
+├── .env.example
+├──  app.js
+├──  package.json
+├──  README.md
+└──  package-lock.json
+```
