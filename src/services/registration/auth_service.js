@@ -17,6 +17,7 @@ class AuthServices {
                 lastName: lastName,
                 referralCode: referralCode,
                 referredBy: referredBy,
+                walletBalance: 0,
                 createdAt: new Date(),
                 updatedAt: new Date(),
             });
@@ -24,9 +25,47 @@ class AuthServices {
             return userData;
         } catch (error) {
             console.log(error);
-            return null;
+            throw new Error(error);
         }
     }
+static getUserById(uid) {
+    console.log('uid', uid);
+    try {
+        const userDoc = db.collection('users').doc(uid).get();
+        if (!userDoc.exists) {
+            console.log('No such user!');
+            return null;
+        }
+        console.log('userDoc.data()', userDoc.data());
+        return { uid: uid, ...userDoc.data() };
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+
+}
+
+ static async getUserByReferralCode(referralCode) {
+
+    console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn',referralCode);
+    try {
+      const userSnap = await db
+        .collection('users')
+        .where('referralCode', '==', `${referralCode}`)
+      
+        .get();
+        console.log('userSnappppppppppppppppppppppppppppppppppppppp', userSnap);
+            
+
+      if (userSnap.empty) return null;
+      console.log('userSnap.docs[0].data()', userSnap.docs[0].data());
+      // return plain object with userId included
+      return { ...userSnap.docs[0].data(), id: userSnap.docs[0].id };
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
 
     static async loginUser(email, password) {
         try {

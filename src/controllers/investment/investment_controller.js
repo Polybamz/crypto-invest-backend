@@ -59,14 +59,17 @@ export const getInvestmentPlans = async (req, res) => {
 export const createInvestment = async (req, res) => {
   const { userId, planId, amount } = req.body;
 
+  console.log('Creating investment for user', userId, 'with plan', planId, 'and amount', amount);
+
   try {
-    const planRef = db.collection('InvestmentPlans').doc(planId);
-    const planDoc = await planRef.get();
-    if (!planDoc.exists) {
+    const planRef = db.collection('InvestmentPlans');
+    const planDoc = await planRef.where('planId', '==', planId).get();
+    
+    if (planDoc.empty) {
       return res.status(404).json({ message: 'Investment plan not found' });
     }
-
-    const plan = planDoc.data();
+console.log('planDoc', planDoc.docs[0].data());
+    const plan = planDoc.docs[0].data();
     const expectedReturn = amount * (1 + plan.roi / 100);
 
     const newInvestment = {
@@ -76,7 +79,7 @@ export const createInvestment = async (req, res) => {
       startDate: admin.firestore.FieldValue.serverTimestamp(),
       endDate: new Date(Date.now() + plan.days * 24 * 60 * 60 * 1000),
       expectedReturn,
-      status: 'active',
+      status: 'pending',
       currentValue: amount,
     };
 

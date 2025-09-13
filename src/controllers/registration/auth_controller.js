@@ -1,18 +1,23 @@
 const  {AuthServices}  = require('../../services/registration/auth_service.js');
 const {validateUser} = require('../../models/registration/user_model');
+const {createReferralChainFirebase, getReferralHistory} = require('../../services/referrals/referral_service.js');
+const { db } = require('../../config/config');
 
 class AuthController {
-    static generateReferralCode() {
-        return Math.random().toString(36).substring(2, 8).toUpperCase();
-    }
+    static generateReferralCode(userId = Date.now()) {
+  const code = 'REF' + userId.toString().slice(-6) + Math.random().toString(36).substring(2, 8).toUpperCase();
+  return code;
+}
+
     static async register(req, res) {
-        const data = req.body;
-        console.log(data);
-        const { error, value } = validateUser(data);
-        console.log(error, value);
-        if (error) {
-            throw new Error(error.details[0].message);
-        }
+        const value = req.body;
+        // console.log(data);
+        // const { error, value } = validateUser(data);
+        console.log( value);
+        // if (error) {
+        //     console.log(error.details[0].message);
+        //     throw new Error(error.details[0].message);
+        // }
 
         try {
             const referralCode =  AuthController.generateReferralCode();
@@ -24,8 +29,25 @@ class AuthController {
                  referralCode,
                   value.referredBy,
                 );
-            if (!user) {
-                return res.status(400).json({ message: 'User registration failed' });
+            // if (!user) {
+            //     return;
+            // }
+            // Create referral chain if referredBy is provided
+            if (value.referredBy) {
+                // create a referral chain collection in firestore
+            //    const referralDoc = await db.collection('referrals').doc(referralCode).get();
+            //     if (!referralDoc.exists) {
+            //         await db.collection('referrals').doc(referralCode).set({
+            //             userId: user.uid,
+            //             referredBy: value.referredBy,
+            //             level: 1,
+            //             createdAt: new Date().toISOString(),
+            //         });
+            //     }
+              const userd =  await AuthServices.getUserById(user.uid);
+
+                console.log('usiegntr;oigjrterd', userd);
+                await createReferralChainFirebase(user.uid, userd.referralCode);
             }
             return res.status(201).json({ message: 'User registered successfully', data: user });
         } catch (error) {
