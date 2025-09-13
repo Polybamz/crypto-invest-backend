@@ -45,8 +45,7 @@ The server will be running on port 8080.
 │   ├── referral.service.js
 │   └── user.service.js
 ├── .env
-├── .env.example
-├──  app.js
+├──  index.js
 ├──  package.json
 ├──  README.md
 └──  package-lock.json
