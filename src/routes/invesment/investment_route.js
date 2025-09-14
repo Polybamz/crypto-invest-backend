@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/plans', getInvestmentPlans);
 router.post('/plans', createPlan);
 router.post('/plansInvestment', createInvestment);
-router.get('/:investmentId',  getInvestmentById);
-router.get('/user/:userId',  getUserInvestments);
+//router.get('in/:investmentId',  getInvestmentById);
+//router.get('/user/:userId',  getUserInvestments);
 
 export default router;

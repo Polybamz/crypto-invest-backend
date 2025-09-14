@@ -11,14 +11,7 @@ class AuthController {
 
     static async register(req, res) {
         const value = req.body;
-        // console.log(data);
-        // const { error, value } = validateUser(data);
         console.log( value);
-        // if (error) {
-        //     console.log(error.details[0].message);
-        //     throw new Error(error.details[0].message);
-        // }
-
         try {
             const referralCode =  AuthController.generateReferralCode();
             const user = await AuthServices.registerUser(
@@ -29,25 +22,11 @@ class AuthController {
                  referralCode,
                   value.referredBy,
                 );
-            // if (!user) {
-            //     return;
-            // }
-            // Create referral chain if referredBy is provided
             if (value.referredBy) {
-                // create a referral chain collection in firestore
-            //    const referralDoc = await db.collection('referrals').doc(referralCode).get();
-            //     if (!referralDoc.exists) {
-            //         await db.collection('referrals').doc(referralCode).set({
-            //             userId: user.uid,
-            //             referredBy: value.referredBy,
-            //             level: 1,
-            //             createdAt: new Date().toISOString(),
-            //         });
-            //     }
               const userd =  await AuthServices.getUserById(user.uid);
 
                 console.log('usiegntr;oigjrterd', userd);
-                await createReferralChainFirebase(user.uid, userd.referralCode);
+                await createReferralChainFirebase(user.uid, userd.referredBy);
             }
             return res.status(201).json({ message: 'User registered successfully', data: user });
         } catch (error) {

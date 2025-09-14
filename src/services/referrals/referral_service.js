@@ -3,53 +3,58 @@ import { admin, db } from '../../config/config.js';
 import { AuthServices } from '../registration/auth_service.js';
 
 // Create referral chain up to 3 levels using Firebase Firestore
+
 async function createReferralChainFirebase(referredUserId, referredByCode) {
   let currentCode = referredByCode;
   let currentUserId = referredUserId;
   let level = 1;
 
   while (currentCode && level <= 3) {
-    console.log('currentCodeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', currentCode);
+    console.log('currentCode', currentCode);
 
     // 1. Find the referrer user by referral code
-    const refrData =  await db
-        .collection('users')
-        .where('referralCode', '==', `${currentCode}`).limit(1)
-        .get();
+    const refSnap = await db
+      .collection('users')
+      .where('referralCode', '==', currentCode)
+      .limit(1)
+      .get();
 
-        // const doc = refrData.docs[0]
+    if (refSnap.empty) {
+      console.log('No user found for referral code', currentCode);
+      break;
+    }
 
-    console.log('referrerData', refrData.docs[0].id);
+    const refDoc = refSnap.docs[0];
+    const referrerData = refDoc.data();
+    const referrerUserId = refDoc.id; // Firestore document ID for the user
 
-      const referrerData = refrData.docs[0].data();
-
-    if (!referrerData) break; // nothing found
-
-    const referrerUserId = refrData.docs[0].id;
-    console.log('referrerUserId', referrerUserId);
+    console.log('referrerUserId', referrerUserId, 'data', referrerData);
 
     const referralData = {
       referralCode: currentCode,
-      referrerUserId: referrerUserId,
+      referrerUserId,
       referredUserId: currentUserId,
-      level: level,
+      level,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
-
-    console.log('referrGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGgalData', referralData);
 
     // 2. Save referral document for this level
     await savedReferral(referralData);
 
     // 3. Move up the chain: find the referrer user's referredBy code
     const userSnap = await db.collection('users').doc(referrerUserId).get();
-    if (!userSnap.exists || !userSnap.data().referredBy) break;
+    if (!userSnap.exists || !userSnap.data().referredBy) {
+      console.log('No more referrer for user', referrerUserId);
+      break;
+    }
 
     currentCode = userSnap.data().referredBy;
     currentUserId = referrerUserId;
     level++;
   }
 }
+
+
 
 
 const savedReferral = async (referralData) => {
