@@ -16,6 +16,7 @@ import paymentRoute from "./src/routes/payment/payment_route.js"
 import investmentRoute from "./src/routes/invesment/investment_route.js"
 import feedbackRoute from "./src/routes/feedback/feedback_route.js"
 import contactRoute from "./src/routes/contact/contact_route.js"  
+import shopRoute from "./src/routes/shop/shop_route.js"
 app.use(cors(
   {
     origin: '*'
@@ -32,6 +33,7 @@ app.use('/api/v1', paymentRoute);
 app.use('/api/v1', investmentRoute);
 app.use('/api/v1', feedbackRoute);
 app.use('/api/v1', contactRoute);
+app.use('/api/v1', shopRoute);
 
 app.listen(port, () => {
   console.log(`Crypto I listening on port ${port}`);
