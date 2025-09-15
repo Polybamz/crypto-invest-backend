@@ -3,6 +3,7 @@ import {
     contactSchema,
     validateContact
 } from '../../models/contact/contact_model.js'
+import { admin } from '../../config/config.js'
 
 class ContactController {
     static async createContact(req, res) {
@@ -11,7 +12,7 @@ class ContactController {
         try {
             const { error, value } = validateContact(data)
             if (error) throw Error(error)
-            const result = await ContactService.createContact(value)
+            const result = await ContactService.createContact({...value, createdAt: admin.firestore.Timestamp.now().toDate(), updatedAt: admin.firestore.Timestamp.now().toDate()})
 
             if (result) {
                 return res.status(200).json({

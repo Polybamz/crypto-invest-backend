@@ -16,8 +16,17 @@ class ContactService {
     }
     static async getContacts() {
         try {
+            const contactsRef = db.collection('contacts');
+            const snapshot = await contactsRef.get();
+            const contacts = [];
+            snapshot.forEach((doc) => {
+                contacts.push({ id: doc.id, ...doc.data() });
+            });
+            return contacts;
 
         } catch (er) {
+            console.log('Error in getting contacts',er)
+            throw new Error('Could not fetch contacts');
 
         }
     }
