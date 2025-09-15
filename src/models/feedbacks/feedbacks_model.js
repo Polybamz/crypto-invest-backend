@@ -1,5 +1,5 @@
-const Joi = require('joi');
 
+import Joi from 'joi';
 
 
 
@@ -18,7 +18,7 @@ const validateFeedback = (feedback) => {
     return feedbackSchema.validate(feedback);
 }
 
-module.exports = {
-  feedbackSchema,
+export {
+    feedbackSchema,
     validateFeedback
-};
+}

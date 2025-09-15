@@ -1,5 +1,4 @@
-const Joi = require('joi');
-
+import Joi from 'joi';
 const contactSchema = Joi.object({
     email: Joi.string().email().required(),
     fullName: Joi.string().required(),
@@ -18,7 +17,7 @@ const validateContact = (contactDetails)=>{
     }
 }
 
-module.exports = {
+export {
     contactSchema,
     validateContact
 }

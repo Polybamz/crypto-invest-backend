@@ -11,8 +11,7 @@
 // }
 
 
-const Joi = require('joi');
-
+import Joi from 'joi';
 const shopItemSchema = Joi.object({
     name: Joi.string().required(),
     price: Joi.number().positive().required(),
@@ -40,4 +39,7 @@ const validateShopItemSchema = (item) => {
     }
 }
 
-module.exports = { shopItemSchema, validateShopItemSchema };
+export {
+    shopItemSchema,
+    validateShopItemSchema
+}
