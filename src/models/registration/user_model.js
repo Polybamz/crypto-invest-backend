@@ -7,6 +7,7 @@ export const userSchema = Joi.object({
   username: Joi.string().required(),
   referralCode: Joi.string().allow(null).default(null),
   referredBy: Joi.string().allow(null).default(null),
+  password: Joi.string().required(),
 });
 
 export const validateUser = (user) => {
