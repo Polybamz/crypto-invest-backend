@@ -45,6 +45,21 @@ static getUserById(uid) {
 
 }
 
+static getwalletBalance(uid) {  
+    try {
+        const userDoc = db.collection('users').doc(uid).get();
+        if (!userDoc.exists) {
+            console.log('No such user!');
+            return null;
+        }
+        console.log('userDoc.data()', userDoc.data());
+        return { uid: uid, balance: userDoc.data().walletBalance };
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
  static async getUserByReferralCode(referralCode) {
 
     console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn',referralCode);

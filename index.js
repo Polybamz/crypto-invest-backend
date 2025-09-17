@@ -11,6 +11,7 @@ import referralRoutes from './src/routes/referrals/referrals_routes.js';
 import feedbackRoute from './src/routes/feedback/feedback_route.js';
 import contactRoute from './src/routes/contact/contact_route.js';
 import shopRoute from './src/routes/shop/shop_route.js';
+import loanRoute from './src/routes/loan/loan_route.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -48,6 +49,7 @@ app.use('/api/v1', investmentRoute);
 app.use('/api/v1', feedbackRoute);
 app.use('/api/v1', contactRoute);
 app.use('/api/v1', shopRoute);
+app.use('/api/loan', loanRoute);
 
 // Start server
 app.listen(port, () => {
