@@ -8,18 +8,18 @@ class LoanController {
             const { error, value } = loanSchema.validate(loan)
             if (error) throw Error(error.message)
             const loanRequest = await LoanService.requestLoan(value);
-            return res.status(201).json(loanRequest);
+            return res.status(201).json({success:true,id:loanRequest});
         } catch (error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).json({success:false, message: error.message });
         }
     }
     static async updateStatus(req, res) {
         try {
             const { loanId, status } = req.params;
             const loan = await LoanService.updateStatus(loanId, status);
-            return res.status(200).json(loan);
+            return res.status(200).json({success:true,data:loan});
         } catch (error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).json({ success: false, message: error.message });
         }
     }
 }
