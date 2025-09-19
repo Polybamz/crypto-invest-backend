@@ -70,7 +70,20 @@ class LoanController {
             return res.status(500).json({ success: false, message: error.message });
         }
     }
+    // loan analytics
+    static async getLoanAnalytics(req, res) {
+        try {
+            const loanAnalytics = await LoanService.getGeneralLoanAnalytics();
+            if(!loanAnalytics){
+                return res.status(404).json({success:false,message:"No loan analytics found"});
+            }
+            return res.status(200).json({success:true,data:loanAnalytics});
+            } catch (error) {
+            return res.status(500).json({ success: false, message: error.message });
+        }
+    }
 
+ 
 
 }
 

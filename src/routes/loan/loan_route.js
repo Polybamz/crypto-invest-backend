@@ -16,5 +16,7 @@ router.delete('/delete-loan/:loanId', LoanController.deleteLoan);
 router.get('/get-loan-by-status/:status', LoanController.getLoansByStatus);
 /// update loan by loanId
 router.put('/update-loan/:loanId', LoanController.updateLoan);
+/// loan analysis
+router.get('/loan-analysis', LoanController.getLoanAnalytics);
 
 export default router;

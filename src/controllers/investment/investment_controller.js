@@ -120,3 +120,127 @@ export const getUserInvestments = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
+
+/// get all investments
+
+export const getAllInvestments = async (req, res) => {
+  try {
+    const investmentsRef = db.collection('UserInvestments');
+    const snapshot = await investmentsRef.get();
+    const investments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    res.status(200).json(investments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+
+
+/// update investment status
+
+export const updateInvestmentStatus = async (req, res) => {
+  const { investmentId, status } = req.params;
+
+  console.log('Updating investment', investmentId, 'to status', status);
+
+  try {
+    const investmentRef = db.collection('UserInvestments').doc(investmentId);
+    const doc = await investmentRef.get();
+    if (!doc.exists) {
+      return res.status(404).json({ message: 'Investment not found' });
+    }
+
+    const investment = doc.data();
+    investment.status = status;
+    investment.updatedAt = admin.firestore.FieldValue.serverTimestamp();
+
+    await investmentRef.update(investment);
+
+    res.status(200).json({ message: 'Investment status updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+/// get general investment analytics
+
+export const getInvestmentAnalytics = async (req, res) => {
+  try {
+    const investmentsRef = db.collection('UserInvestments');
+    const snapshot = await investmentsRef.get();
+   
+    const investments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    if(investments.isEmpty){
+      return res.status(404).json({ 
+        totalInvestments: 0,
+        totalAmount: 0,
+        totalReturn: 0,
+        avgReturn: 0,
+        totalDuration: 0,
+        avgDuration: 0,
+        totalDurationInDays: 0,
+        avgDurationInDays: 0,
+       });
+    }
+    const totalInvestments = investments.length;
+    const totalAmount = investments.reduce((acc, curr) => acc + curr.amount, 0);
+    const totalReturn = investments.reduce((acc, curr) => acc + curr.currentValue, 0);
+    const avgReturn = totalReturn / totalInvestments;
+    const totalDuration = investments.reduce((acc, curr) => acc + (curr.endDate - curr.startDate), 0);
+    const avgDuration = totalDuration / totalInvestments;
+    const totalDurationInDays = totalDuration / (1000 * 60 * 60 * 24);
+    const avgDurationInDays = avgDuration / (1000 * 60 * 60 * 24);
+    res.status(200).json({
+      totalInvestments,
+      totalAmount,
+      totalReturn,
+      avgReturn,
+      totalDuration,
+      avgDuration,
+      totalDurationInDays,
+      avgDurationInDays,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+/// user investment analytics
+
+export const getUserInvestmentAnalytics = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const investmentsRef = db.collection('UserInvestments').where('userId', '==', userId);
+    const snapshot = await investmentsRef.get();
+    const investments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    if(investments.isEmpty){
+      return res.status(404).json({ message: 'User has no investments' });
+    }
+    const totalInvestments = investments.length;
+    const totalAmount = investments.reduce((acc, curr) => acc + curr.amount, 0);
+    const totalReturn = investments.reduce((acc, curr) => acc + curr.currentValue, 0);
+    const avgReturn = totalReturn / totalInvestments;
+    const totalDuration = investments.reduce((acc, curr) => acc + (curr.endDate - curr.startDate), 0);
+    const avgDuration = totalDuration / totalInvestments;
+    const totalDurationInDays = totalDuration / (1000 * 60 * 60 * 24);
+    const avgDurationInDays = avgDuration / (1000 * 60 * 60 * 24);
+    res.status(200).json({
+      totalInvestments,
+      totalAmount,
+      totalReturn,
+      avgReturn,
+      totalDuration,
+      avgDuration,
+      totalDurationInDays,
+      avgDurationInDays,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

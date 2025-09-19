@@ -82,7 +82,45 @@ class LoanService {
             throw Error(error.message);
         }
     }
-
+/// general loan analytics
+static async getGeneralLoanAnalytics() {
+    try {
+        const loans = await db.collection("loans").get();
+        if (loans.empty) {
+            return {
+                totalLoans: 0,
+                approvedLoans: 0,
+                pendingLoans: 0,
+                rejectedLoans: 0,
+                totalAmount: 0,
+                approvedAmount: 0,
+                pendingAmount: 0,
+                rejectedAmount: 0
+            };
+        }
+        const totalLoans = loans.docs.length;
+        const approvedLoans = loans.docs.filter((loan) => loan.data().status === "approved").length;
+        const pendingLoans = loans.docs.filter((loan) => loan.data().status === "pending").length;
+        const rejectedLoans = loans.docs.filter((loan) => loan.data().status === "rejected").length;
+        const totalAmount = loans.docs.reduce((acc, loan) => acc + loan.data().amount, 0);
+        const approvedAmount = loans.docs.filter((loan) => loan.data().status === "approved").reduce((acc, loan) => acc + loan.data().amount, 0);
+        const pendingAmount = loans.docs.filter((loan) => loan.data().status === "pending").reduce((acc, loan) => acc + loan.data().amount, 0);
+        const rejectedAmount = loans.docs.filter((loan) => loan.data().status === "rejected").reduce((acc, loan) => acc + loan.data().amount, 0);
+        return {
+            totalLoans,
+            approvedLoans,
+            pendingLoans,
+            rejectedLoans,
+            totalAmount,
+            approvedAmount,
+            pendingAmount,
+            rejectedAmount
+        };
+    } catch (error) {
+        console.log(error);
+        throw Error(error.message);
+    }
+}
 
 }
 
