@@ -6,7 +6,7 @@ export const userSchema = Joi.object({
   lastName: Joi.string().required(),
   username: Joi.string().required(),
   referralCode: Joi.string().allow(null).default(null),
-  referredBy: Joi.string().allow(null).default('REF936028RCD04G'),
+  referredBy: Joi.string().allow(null).default(null),
   password: Joi.string().required(),
 });
 

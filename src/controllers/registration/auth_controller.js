@@ -29,27 +29,29 @@ export class AuthController {
         referralCode,
         value.referredBy || null
       );
+       console.log(user);
 
       if (value.referredBy) {
-        const q = query(
-          collection(db, "users"),
-          where("referralCode", "==", value.referredBy)
-        );
-        const querySnapshot = await getDocs(q);
+        console.log('value.referredBy');
+        const usersRef = db.collection("users");
+        const q = usersRef.where("referralCode", "==", value.referredBy);
+      const querySnapshot = await q.get();
 
         if (!querySnapshot.empty) {
           const referrerDoc = querySnapshot.docs[0];
           const referrerId = referrerDoc.id;
-
+ console.log('0');
           await updateDoc(doc(db, "users", referrerId), {
             bonus: increment(100),
             updatedAt: new Date()
           });
+ console.log('1');
 
           await updateDoc(doc(db, "users", user.uid), {
             bonus: increment(50),
             updatedAt: new Date()
           });
+ console.log('2');
 
           await updateDoc(doc(db, "users", referrerId), {
             referralCount: increment(1),
@@ -57,6 +59,7 @@ export class AuthController {
           });
         }
       }
+      console.log('3');
 
       return res.status(200).json({
         message: "User registered successfully",
