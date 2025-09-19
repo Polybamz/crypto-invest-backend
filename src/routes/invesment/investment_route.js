@@ -4,11 +4,11 @@ import { getInvestmentPlans, createInvestment, getInvestmentById, getUserInvestm
 const router = express.Router();
 
 router.get('/plans', getInvestmentPlans);
-router.post('/plans', createPlan);
-router.post('/plansInvestment', createInvestment);
-router.get('/investments/:investmentId',  getInvestmentById);
+//router.post('/create-plans', createPlan);
+router.post('/make-investment', createInvestment);
+// router.get('/investments/:investmentId',  getInvestmentById);
 router.get('/user-investments/:userId',  getUserInvestments);
-router.get('/investments',  getAllInvestments);
+router.get('/all-investments',  getAllInvestments);
 router.put('/investment/:investmentId/:status',  updateInvestmentStatus);
 router.get('/investment-analysis', getInvestmentAnalytics)
 router.get('/user/:userId/investment-analysis', getUserInvestmentAnalytics)
