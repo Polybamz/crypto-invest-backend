@@ -11,7 +11,7 @@ router.get('/user/:userId',  getUserInvestments);
 router.get('/investments',  getAllInvestments);
 router.put('/investment/:investmentId/:status',  updateInvestmentStatus);
 router.get('/investment-analysis', getInvestmentAnalytics)
-router.get('/user/:userId/investment-analysis')
+router.get('/user/:userId/investment-analysis', getUserInvestmentAnalytics)
 
 
 export default router;
