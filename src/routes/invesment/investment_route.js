@@ -1,12 +1,11 @@
 import express from 'express';
-import { getInvestmentPlans, createInvestment, getInvestmentById, getUserInvestments, createPlan, getAllInvestments, updateInvestmentStatus, getInvestmentAnalytics, getUserInvestmentAnalytics } from '../../controllers/investment/investment_controller.js';
+import { getInvestmentPlans, createInvestment, getUserInvestments, createPlan, getAllInvestments, updateInvestmentStatus, getInvestmentAnalytics, getUserInvestmentAnalytics } from '../../controllers/investment/investment_controller.js';
 
 const router = express.Router();
 
 router.get('/plans', getInvestmentPlans);
 //router.post('/create-plans', createPlan);
 router.post('/make-investment', createInvestment);
-// router.get('/investments/:investmentId',  getInvestmentById);
 router.get('/user-investments/:userId',  getUserInvestments);
 router.get('/all-investments',  getAllInvestments);
 router.put('/investment/:investmentId/:status',  updateInvestmentStatus);
