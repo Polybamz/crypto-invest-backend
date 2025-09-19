@@ -12,7 +12,7 @@ const router = express.Router();
 router.post("/login", AuthController.login);
 router.post("/register", AuthController.register);
 router.get("/user", AuthController.getUser);
-router.get('user-get/:uid')
+router.get('user-get/:uid', AuthController.getUserById)
 
 router.get("/referrals/:uid", async (req, res) => {
   try {
