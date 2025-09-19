@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/plans', getInvestmentPlans);
 router.post('/plans', createPlan);
 router.post('/plansInvestment', createInvestment);
-router.get('/investment/:investmentId',  getInvestmentById);
+router.get('/investments/:investmentId',  getInvestmentById);
 router.get('/user-investments/:userId',  getUserInvestments);
 router.get('/investments',  getAllInvestments);
 router.put('/investment/:investmentId/:status',  updateInvestmentStatus);

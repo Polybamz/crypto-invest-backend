@@ -83,7 +83,7 @@ console.log('planDoc', planDoc.docs[0].data());
       currentValue: amount,
     };
 
-    const docRef = await db.collection('UserInvestments').add(newInvestment);
+    const docRef = await db.collection('UserInvestments').doc(userId).set(newInvestment);
 
     res.status(201).json({ message: 'Investment created successfully', investmentId: docRef.id });
   } catch (error) {
