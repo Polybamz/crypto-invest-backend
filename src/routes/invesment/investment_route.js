@@ -7,7 +7,7 @@ router.get('/plans', getInvestmentPlans);
 router.post('/plans', createPlan);
 router.post('/plansInvestment', createInvestment);
 router.get('/investment/:investmentId',  getInvestmentById);
-router.get('/user/:userId',  getUserInvestments);
+router.get('/user-investments/:userId',  getUserInvestments);
 router.get('/investments',  getAllInvestments);
 router.put('/investment/:investmentId/:status',  updateInvestmentStatus);
 router.get('/investment-analysis', getInvestmentAnalytics)
