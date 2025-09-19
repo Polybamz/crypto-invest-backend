@@ -1,6 +1,6 @@
 import { AuthServices } from "../../services/registration/auth_service.js";
 import { validateUser } from "../../models/registration/user_model.js";
-import { db } from "../../config/config.js";
+import { db, admin } from "../../config/config.js";
 import { doc, updateDoc, increment, getDocs, collection, query, where } from "firebase/firestore";
 
 export class AuthController {
@@ -29,32 +29,32 @@ export class AuthController {
         referralCode,
         value.referredBy || null
       );
-       console.log(user);
+      console.log(user);
 
       if (value.referredBy) {
         console.log('value.referredBy');
         const usersRef = db.collection("users");
         const q = usersRef.where("referralCode", "==", value.referredBy);
-      const querySnapshot = await q.get();
+        const querySnapshot = await q.get();
 
         if (!querySnapshot.empty) {
           const referrerDoc = querySnapshot.docs[0];
           const referrerId = referrerDoc.id;
- console.log('0');
-          await updateDoc(doc(db, "users", referrerId), {
-            bonus: increment(100),
+          console.log('0');
+          await usersRef.doc(referrerId).update({
+            bonus: admin.firestore.FieldValue.increment(100),
             updatedAt: new Date()
           });
- console.log('1');
+          console.log('1');
 
-          await updateDoc(doc(db, "users", user.uid), {
-            bonus: increment(50),
+          await usersRef.doc(user.uid).update({
+            bonus: admin.firestore.FieldValue.increment(50),
             updatedAt: new Date()
           });
- console.log('2');
+          console.log('2');
 
-          await updateDoc(doc(db, "users", referrerId), {
-            referralCount: increment(1),
+          await usersRef.doc(referrerId).update({
+            referralCount: admin.firestore.FieldValue.increment(1),
             updatedAt: new Date()
           });
         }
@@ -127,7 +127,7 @@ export class AuthController {
 
       const userDoc = querySnapshot.docs[0];
       const userData = userDoc.data();
-      
+
       return res.status(200).json({
         message: "User found",
         data: {
