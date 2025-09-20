@@ -10,8 +10,8 @@ const feedbackSchema = Joi.object({
     amount: Joi.number().required(),
     date: Joi.string().required(),
     message: Joi.string().required(),
-    link: Joi.string().uri().required(),
-    avatar: Joi.string().uri().required(),
+    link: Joi.string().allow(null),
+    avatar: Joi.string().allow(null),
 });
 
 const validateFeedback = (feedback) => {

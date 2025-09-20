@@ -3,10 +3,14 @@ import feedbackService from "../../services/feedback/feedback_servce.js";
 
 class FeedbackController {
     static async createFeedback(req, res) {
-        const { data } = req.body;
+        const  data  = req.body;
+        console.log('ddddddddddddddddddddddddddddddddddd',data)
        try {
             const { value, error } = feedbackSchema.validate(data);
-            if (error) throw Error(error);
+            if (error) {
+                
+                console.log('errrrrrrrr',error)
+                throw Error(error.message)};
             const result = await feedbackService.createFeedback(value);
             if (result) {
                 return res.status(201).json({
@@ -18,7 +22,7 @@ class FeedbackController {
                     message: "Failed to create feedback",
                 });
             }} catch (er) {
-            return res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({ message: "Internal server error", error: er });
         }
     }
 

@@ -1,6 +1,7 @@
 import { db,admin } from "../../config/config.js"
 class feedbackService  {
     static async createFeedback(data) {
+        console.log('ggggggggggggggggggggggggggggggg',data)
         try {
             const feedbackRef = db.collection('feedbacks');
             const feedback = await feedbackRef.add(data);
