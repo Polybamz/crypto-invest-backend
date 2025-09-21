@@ -234,6 +234,165 @@ async function getReferralStatsFromUsers(userId) {
   }
 }
 
+
+function generateRandomName() {
+        const adjectives = [
+            'Adorable',
+            'Adventurous',
+            'Agile',
+            'Amazing',
+            'Astonishing',
+            'Breathtaking',
+            'Brilliant',
+            'Charming',
+            'Colorful',
+            'Delightful',
+            'Elegant',
+            'Exciting',
+            'Fantastic',
+            'Fascinating',
+            'Fine',
+            'Gorgeous',
+            'Great',
+            'Inspiring',
+            'Joyful',
+            'Lively',
+            'Lovely',
+            'Magnificent',
+            'Marvelous',
+            'Misty',
+            'Mysterious',
+            'Nice',
+            'Nostalgic',
+            'Original',
+            'Outstanding',
+            'Perfect',
+            'Popular',
+            'Quaint',
+            'Radiant',
+            'Remarkable',
+            'Shining',
+            'Stunning',
+            'Super',
+            'Superb',
+            'Swanky',
+            'Tantalizing',
+            'Terrific',
+            'Wonderful',
+            'Wondrous',
+            'Youthful',
+        ];
+        const nouns = [
+            'Aardvark',
+            'Alligator',
+            'Ant',
+            'Armadillo',
+            'Baboon',
+            'Badger',
+            'Barracuda',
+            'Bat',
+            'Bear',
+            'Beaver',
+            'Bird',
+            'Butterfly',
+            'Camel',
+            'Caribou',
+            'Caterpillar',
+            'Chameleon',
+            'Cheetah',
+            'Chinchilla',
+            'Chipmunk',
+            'Cormorant',
+            'Coyote',
+            'Crow',
+            'Dolphin',
+            'Dragon',
+            'Duck',
+            'Eagle',
+            'Elephant',
+            'Falcon',
+            'Ferret',
+            'Finch',
+            'Flamingo',
+            'Fox',
+            'Frog',
+            'Giraffe',
+            'Gnat',
+            'Gorilla',
+            'Gull',
+            'Hedgehog',
+            'Hippopotamus',
+            'Hyena',
+            'Ibex',
+            'Iguana',
+            'Jackal',
+            'Kangaroo',
+            'Koala',
+            'Lemur',
+            'Lion',
+            'Llama',
+            'Mink',
+            'Monkey',
+            'Moose',
+            'Narwhal',
+            'Newt',
+            'Owl',
+            'Panther',
+            'Parrot',
+            'Penguin',
+            'Pheasant',
+            'Quail',
+            'Raccoon',
+            'Rat',
+            'Raven',
+            'Rhinoceros',
+            'Seahorse',
+            'Seal',
+            'Shark',
+            'Sheep',
+            'Skunk',
+            'Squirrel',
+            'Tiger',
+            'Turtle',
+            'Walrus',
+            'Wolf',
+            'Wolverine',
+            'Wombat',
+            'Zebra',
+        ];
+        const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+        const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+        return `${randomAdjective} ${randomNoun}`;
+    }
+
+    /// asign referral to user
+ async function  asignReferalToUser(referralCode, numberOfreferrals){
+  try {
+    
+    // add random user in the user collection bases on the number of referrals with the referral code
+    for(let i=0;i<numberOfreferrals;i++){
+       const name = generateRandomName();
+        const firstName = name.split(' ')[0];
+        const lastName = name.split(' ')[1];
+        const referredBy = referralCode;
+        await db.collection('users').add({
+                email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i}@gmail.com`,
+                firstName: firstName,
+                lastName: lastName,
+                referralCode: `RF${Date.now().toString()}`,
+                referredBy: referredBy,
+                walletBalance: 0,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            })}
+                    return true;
+
+  } catch (er){
+    console.log(er);
+    throw new Error(er);
+  }
+}
+
 // ======================
 // Exports
 // ======================
@@ -245,5 +404,6 @@ export {
   // Controller-facing exports
   createTransaction,
   getReferralStats,
-  getReferralHistory
+  getReferralHistory,
+  asignReferalToUser
 };

@@ -22,6 +22,8 @@ router.get('/chain/:uid', ReferralsController.getCompleteReferralChain);
 
 router.get('/analytics', ReferralsController.getReferralAnalytics);
 
+router.post('/assign-referral', ReferralsController.asignReferralToUser);
+
 router.get('/:uid/stats', async (req, res) => {
   const { uid } = req.params;
   try {

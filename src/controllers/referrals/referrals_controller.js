@@ -3,7 +3,8 @@ import {
   getAllReferredUsers, 
   getUsersReferredByUser, 
   getCompleteReferralChain, 
-  getReferralStatsFromUsers 
+  getReferralStatsFromUsers ,
+  asignReferalToUser
 } from "../../services/referrals/referral_service.js";
 import { db } from "../../config/config.js";
 
@@ -221,6 +222,21 @@ class ReferralsController {
       }
     });
     return grouped;
+  }
+
+  static asignReferralToUser(req, res) {
+    try {
+      const { referral_code, number_of_referrals } = req.body;
+      const result = asignReferalToUser(referral_code, number_of_referrals);
+      if (result) {
+        return res.status(200).json({success: true, message: "Referral assigned successfully" });
+      } else {
+        return res.status(400).json({success: false, message: "Failed to assign referral" });
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ success: false, message: "Failed to assign referral" });
+    }
   }
 }
 

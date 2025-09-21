@@ -2,6 +2,10 @@ import { db, admin } from '../../config/config.js';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 class AuthServices {
+
+
+
+
     static async registerUser(email, password, firstName, lastName, referralCode, referredBy) {
         try {
             console.log(email, password, firstName, lastName, referralCode, referredBy);
@@ -106,5 +110,37 @@ class AuthServices {
             return null;
         }
     }
+
+    /// getallusers
+    static async getAllUsers() {
+        try {
+            const userDocs = await db.collection('users').get();
+            if (userDocs.empty) return null;
+            console.log('userDocs.docs',)
+            const allUsers = [];
+            userDocs.forEach((userDoc) => {
+                allUsers.push({ uid: userDoc.id, ...userDoc.data() });
+            });
+            return allUsers;
+        
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
+        }
+    }
+
+    static async updateUserInfoq(uid, data) {
+        try {
+            const userDoc = await db.collection('users').doc(uid).update(data);
+            if (!userDoc.exists) {
+                return null;
+            }
+            return { uid: uid, ...userDoc.data() };
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
 }
 export { AuthServices };
