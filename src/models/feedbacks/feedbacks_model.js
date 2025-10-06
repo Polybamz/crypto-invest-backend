@@ -11,7 +11,7 @@ const feedbackSchema = Joi.object({
     date: Joi.string().required(),
     message: Joi.string().required(),
     link: Joi.string().allow(null),
-    avatar: Joi.string().allow(null),
+    avatar: Joi.string().allow(null).default('/placeholder.svg'),
 });
 
 const validateFeedback = (feedback) => {

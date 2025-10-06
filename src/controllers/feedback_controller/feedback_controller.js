@@ -53,6 +53,31 @@ class FeedbackController {
         } catch (er) {
             return res.status(500).json({ message: "Internal server error" });
         }
+
+
+    }
+
+   static async updateFeedback(req, res) {
+    const {data} = req.body
+    try {
+        const { value, error } = feedbackSchema.validate(data);
+        if (error) {
+            throw Error(error.message)};
+        const result = await feedbackService.updateFeedback(data);
+        if (result) {
+            return res.status(200).json({
+                message: "Feedback updated successfully",
+                data: result,
+            });
+        } else {
+            return res.status(404).json({
+                message: "Feedback not found",
+            });
+        }
+    } catch (er){
+        return res.status(500).json({ message: "Internal server error", error: er });
+    }
+            
     }
 }
 
