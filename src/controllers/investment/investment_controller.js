@@ -92,6 +92,21 @@ console.log('planDoc', planDoc.docs[0].data());
     res.status(500).json({ message: error.message });
   }
 };
+// delete plan
+export const deletePlan = async (req, res) => {
+  const { planId } = req.params;
+  try {
+    const planRef = db.collection('InvestmentPlans').doc(planId);
+    const doc = await planRef.get();
+    if (!doc.exists) {
+      return res.status(404).json({ message: 'Plan not found' });
+    }
+    await planRef.delete();
+    res.status(200).json({ message: 'Plan deleted successfully' });
+  } catch (error) { 
+    res.status(500).json({ message: error.message });
+  }
+}
 
 // @desc    Get investment details
 // @route   GET /api/investments/:investmentId

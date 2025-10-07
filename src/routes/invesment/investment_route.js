@@ -1,5 +1,5 @@
 import express from 'express';
-import { getInvestmentPlans, createInvestment, getUserInvestments, createPlan, getAllInvestments, updateInvestmentStatus, getInvestmentAnalytics,  } from '../../controllers/investment/investment_controller.js';
+import { getInvestmentPlans, createInvestment, getUserInvestments, createPlan, getAllInvestments, updateInvestmentStatus, getInvestmentAnalytics, deletePlan  } from '../../controllers/investment/investment_controller.js';
 
 const router = express.Router();
 
@@ -10,6 +10,9 @@ router.get('/user-investments/:userId',  getUserInvestments);
 router.get('/all-investments',  getAllInvestments);
 router.put('/investment/:investmentId/:status',  updateInvestmentStatus);
 router.get('/investment-analysis', getInvestmentAnalytics)
+// delete plan
+router.delete('/plan/:planId', deletePlan)
+
 //router.get('/user/:userId/investment-analysis', getUserInvestmentAnalytics)
 
 
